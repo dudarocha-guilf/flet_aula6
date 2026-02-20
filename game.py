@@ -1,0 +1,157 @@
+import flet as ft
+
+def main(page: ft.Page):
+    page.bgcolor = "#d063f7"
+    # Variável com a imagem certa
+    imagem_correta = "Rapunzel"
+    
+    # Texto para feedback
+    mensagem = ft.Text(
+        f"Qual é a {imagem_correta}?",
+        text_align=ft.TextAlign.CENTER,
+        size=20,
+        height=50
+    )
+
+    # Função Jogar
+    def jogar(e):
+        imagem_selecionada = e.control.content.value
+        if imagem_selecionada == imagem_correta:
+            e.control.bgcolor = ft.Colors.GREEN_200
+            e.control.image.opacity = 0.3
+            e.control.content.value = "💜"
+            e.control.content.size = 40
+            mensagem.value = "Parabéns! Você acertou."
+        else:
+            e.control.bgcolor = ft.Colors.RED_200
+            e.control.image.opacity = 0.3
+            e.control.content.value = "😭"
+            e.control.content.size = 40
+            mensagem.value = f"Ops! Não é a {imagem_correta}. Tente novamente."
+        
+        container_cinderella.on_click = None
+        container_rapunzel.on_click = None
+        container_tiana.on_click = None
+
+        btn_jogar_novamente.visible = True
+
+        page.update()
+    
+    # Função Jogar Novamente
+    def jogar_novamente(e):
+        btn_jogar_novamente.visible = False
+        mensagem.value = f"Clique na {imagem_correta}"
+
+        container_cinderella.image.opacity = 1.0
+        container_cinderella.on_click = jogar
+        container_cinderella.content.size = 0
+        container_cinderella.content.value = "cinderella"
+
+        container_tiana.image.opacity = 1.0
+        container_tiana.on_click = jogar
+        container_tiana.content.size = 0
+        container_tiana.content.value = "tiana"
+
+        container_rapunzel.image.opacity = 1.0
+        container_rapunzel.on_click = jogar
+        container_rapunzel.content.size = 0
+        container_rapunzel.content.value = "rapunzel"
+        
+        page.update()
+
+    # Container CINDERELLA
+    container_cinderella = ft.Container(
+        content=ft.Text(
+            "Cinderella",
+            size=0
+        ),
+        image=ft.DecorationImage(
+            src="images/cinderella.jpg",
+            fit=ft.BoxFit.COVER
+        ),
+        width=120,
+        height=120,
+        margin=10,
+        bgcolor=ft.Colors.GREY_200,
+        border_radius=10,
+        alignment=ft.Alignment(0, 0),
+        ink=True,
+        on_click=jogar
+    )
+
+    # Container Tiana
+    container_tiana = ft.Container(
+        content=ft.Text(
+            "Tiana",
+            size=0
+        ),
+        image=ft.DecorationImage(
+            src="images/tiana.webp",
+            fit=ft.BoxFit.COVER
+        ),
+        width=120,
+        height=120,
+        margin=10,
+        bgcolor=ft.Colors.GREY_200,
+        border_radius=10,
+        alignment=ft.Alignment(0, 0),
+        ink=True,
+        on_click=jogar
+    )
+
+    # Container RAPUNZEL
+    container_rapunzel = ft.Container(
+        content=ft.Text(
+            "Rapunzel",
+            size=0
+        ),
+        image=ft.DecorationImage(
+            src="images/rapunzel.webp",
+            fit=ft.BoxFit.COVER
+        ),
+        width=120,
+        height=120,
+        margin=10,
+        bgcolor=ft.Colors.GREY_200,
+        border_radius=10,
+        alignment=ft.Alignment(0, 0),
+        ink=True,
+        on_click=jogar
+    )
+
+    # Botão "Jogar Novamente"
+    btn_jogar_novamente = ft.Button(
+        "Jogar Novamente",
+        visible=False,
+        on_click=jogar_novamente ,
+        bgcolor= "#a602e0",
+        color="white"
+    )
+
+    page.add(
+        ft.Column(
+            [
+                ft.Text(
+                    "Selecione a imagem correta",
+                    size=24,
+                    weight="bold",
+                    color = "#bc03ff"
+                ),
+                mensagem,
+                ft.Row(
+                    [
+                        container_cinderella,
+                        container_tiana,
+                        container_rapunzel
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER
+                ),
+                btn_jogar_novamente
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            spacing=20
+        )
+    )
+
+ft.run(main)
